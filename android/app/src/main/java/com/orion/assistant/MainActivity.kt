@@ -34,6 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import android.content.Context
+import org.json.JSONArray
+import org.json.JSONObject
 
 private val Bg = Color(0xFF050B13)
 private val Panel = Color(0xFF0B1B2A)
@@ -46,6 +49,28 @@ private val Glow = Brush.linearGradient(listOf(Color(0xFF0C3545), Color(0xFF0920
 
 data class OrionAppEntry(val label: String, val packageName: String)
 data class OrionContact(val name: String, val phone: String)
+data class LocalTask(val id: Long, val title: String, val done: Boolean)
+
+private fun load04Tasks(context: Context): List<LocalTask> {
+    val raw = context.getSharedPreferences("04_local_data", Context.MODE_PRIVATE)
+        .getString("tasks", "[]") ?: "[]"
+    return runCatching {
+        val array = JSONArray(raw)
+        (0 until array.length()).mapNotNull { index ->
+            val item = array.optJSONObject(index) ?: return@mapNotNull null
+            LocalTask(item.optLong("id"), item.optString("title"), item.optBoolean("done"))
+        }.filter { it.title.isNotBlank() }
+    }.getOrDefault(emptyList())
+}
+
+private fun save04Tasks(context: Context, tasks: List<LocalTask>) {
+    val array = JSONArray()
+    tasks.forEach { task ->
+        array.put(JSONObject().put("id", task.id).put("title", task.title).put("done", task.done))
+    }
+    context.getSharedPreferences("04_local_data", Context.MODE_PRIVATE)
+        .edit().putString("tasks", array.toString()).apply()
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,6 +120,8 @@ private fun OrionCommandCenter() {
     var messageBody by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var search by remember { mutableStateOf("") }
+    val localTasks = remember { mutableStateListOf<LocalTask>().apply { addAll(load04Tasks(context)) } }
+    var taskDraft by remember { mutableStateOf("") }
 
     fun loadApps() {
         val intent = Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER)
@@ -220,7 +247,75 @@ private fun OrionCommandCenter() {
                         OutlinedTextField(phoneNumber,{phoneNumber=it},label={Text("شماره تلفن")},modifier=Modifier.fillMaxWidth())
                         OutlinedButton(onClick={if(phoneNumber.isNotBlank()) runCatching { context.startActivity(Intent(Intent.ACTION_DIAL,Uri.parse("tel:${Uri.encode(phoneNumber)}"))) }},enabled=phoneNumber.isNotBlank()) { Text("بازکردن شماره‌گیر") }
                     }
-                    "وظایف" -> { PageTitle("وظایف و عملیات","مرکز پیگیری اجرای فرمان‌ها"); StatusTile("کنترل رابط برنامه‌ها","نیازمند پیاده‌سازی سرویس Accessibility",Cyan); StatusTile("برنامه‌ریز هوشمند","هنوز به موتور هوش مصنوعی متصل نشده است",Green); StatusTile("تأیید عملیات حساس","ارسال، حذف و پرداخت باید با اجازه شما باشد",Cyan) }
+                    "وظایف" -> {
+                        Column(Modifier.fillMaxSize()) {
+                            PageTitle("مدیریت وظایف 04", "وظایف روی همین گوشی ذخیره می‌شوند و بدون اینترنت در دسترس‌اند")
+                            OutlinedTextField(
+                                value = taskDraft,
+                                onValueChange = { taskDraft = it },
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                label = { Text("وظیفه جدید") },
+                                placeholder = { Text("مثلاً تماس با مشتری") }
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Button(
+                                onClick = {
+                                    val title = taskDraft.trim()
+                                    if (title.isNotEmpty()) {
+                                        localTasks.add(0, LocalTask(System.currentTimeMillis(), title, false))
+                                        save04Tasks(context, localTasks)
+                                        taskDraft = ""
+                                    }
+                                },
+                                enabled = taskDraft.isNotBlank(),
+                                colors = ButtonDefaults.buttonColors(containerColor = Green)
+                            ) { Text("افزودن وظیفه", color = Bg) }
+                            Spacer(Modifier.height(10.dp))
+                            Text("تعداد: ${localTasks.size}  •  انجام‌شده: ${localTasks.count { it.done }}", color = Muted, fontSize = 12.sp)
+                            Spacer(Modifier.height(8.dp))
+                            if (localTasks.isEmpty()) {
+                                Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+                                    Text("هنوز وظیفه‌ای ثبت نشده است.", color = Muted)
+                                }
+                            } else {
+                                LazyColumn(
+                                    modifier = Modifier.weight(1f),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    items(localTasks, key = { it.id }) { task ->
+                                        Surface(color = Panel, shape = RoundedCornerShape(14.dp), modifier = Modifier.fillMaxWidth()) {
+                                            Row(Modifier.padding(horizontal = 10.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                                Checkbox(
+                                                    checked = task.done,
+                                                    onCheckedChange = { checked ->
+                                                        val index = localTasks.indexOfFirst { it.id == task.id }
+                                                        if (index >= 0) {
+                                                            localTasks[index] = localTasks[index].copy(done = checked)
+                                                            save04Tasks(context, localTasks)
+                                                        }
+                                                    },
+                                                    colors = CheckboxDefaults.colors(checkedColor = Green)
+                                                )
+                                                Text(
+                                                    task.title,
+                                                    color = if (task.done) Muted else MainText,
+                                                    modifier = Modifier.weight(1f),
+                                                    fontSize = 14.sp
+                                                )
+                                                IconButton(onClick = {
+                                                    localTasks.remove(task)
+                                                    save04Tasks(context, localTasks)
+                                                }) {
+                                                    Icon(Icons.Default.Delete, contentDescription = "حذف وظیفه", tint = Color(0xFFFF8585))
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     "حافظه و یادگیری" -> { PageTitle("حافظه و یادگیری","مدیریت داده‌های محلی 04"); StatusTile("حافظه محلی","ذخیره پایدار و مدیریت حافظه هنوز پیاده‌سازی نشده است",Cyan) }
                     "امنیت و مجوزها" -> { PageTitle("امنیت و مجوزها","مجوزها باید آگاهانه و توسط شما فعال شوند"); StatusTile("مخاطبین","مجوز فقط هنگام درخواست شما گرفته می‌شود",Green); StatusTile("دسترسی‌پذیری اندروید","سرویس کنترل صفحه هنوز اضافه نشده است",Cyan); StatusTile("توقف اضطراری","در نسخه عامل اجرایی اضافه خواهد شد",Green) }
                     "تنظیمات" -> { PageTitle("تنظیمات 04","تنظیمات ظاهری و رفتاری"); StatusTile("زبان","فارسی • رابط راست‌چین",Green); StatusTile("حالت عملکرد","هدف: آفلاین‌محور با امکانات آنلاین اختیاری",Cyan); StatusTile("سطح استقلال","سطح متعادل؛ تأیید عملیات حساس",Green) }
