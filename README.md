@@ -1,6 +1,6 @@
 # ORION — Persian personal assistant
 
-ORION is being rebuilt as an offline-first personal assistant, starting with a browser/PWA interface and targeting a dedicated Android agent later.
+ORION is an offline-first Persian personal assistant with a dedicated native Android app and a browser/PWA foundation.
 
 ## Current web foundation (v0.2)
 The root page is the new ORION workspace. It currently includes:
@@ -19,11 +19,11 @@ The root page is the new ORION workspace. It currently includes:
 1. **Web core:** UI, local data store, command router, task/memory modules, backup/restore.
 2. **AI adapter:** pluggable local model (when device/browser supports it) and optional online provider adapter; clear source labels and explicit failure states.
 3. **Agent runtime:** permission-scoped tools, action plans, confirmation gate for sensitive/irreversible actions, audit log, cancellation and recovery.
-4. **Android host:** dedicated Android app wrapper/native bridge for notifications, share intents, files and approved device capabilities. A web page alone cannot safely or reliably control other Android apps.
+4. **Android host:** native Kotlin/Jetpack Compose app. The current Android foundation can enumerate launchable apps, open selected apps, request Contacts permission, read phone-number entries after approval, open the system dialer, and prepare an SMS draft in the default messaging app. It does not read private data inside other apps.
 5. **Security and reliability:** encrypted local vault, import validation, tests, accessibility and performance.
 
 ## Honest capability boundary
-Not implemented yet: autonomous multi-step agent execution, native Android integration/APK, background service, push notifications, automatic semantic memory, cloud sync/accounts, bundled offline LLM, encrypted vault, or full voice assistant. The current local chat uses deterministic commands and must not be represented as a general AI model.
+Not implemented yet: autonomous multi-step agent execution, notification listener, background service, third-party messenger integrations, automatic semantic memory, cloud sync/accounts, bundled offline LLM, encrypted vault, and full voice assistant. The Android interface and device actions still require a successful build and device verification after each change. The current local chat uses deterministic commands and must not be represented as a general AI model.
 
 ## Run / deploy
 GitHub Actions workflow `.github/workflows/pages.yml` deploys the repository root to GitHub Pages. Open the Pages URL on Android Chrome and use **Add to Home screen** if available. First visit needs network; same-origin shell assets can then be cached. This does not make external model libraries or model weights available offline.
