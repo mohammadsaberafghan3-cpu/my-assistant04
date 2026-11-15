@@ -10,6 +10,7 @@
     <application
         android:allowBackup="false"
         android:label="ORION"
+        android:icon="@mipmap/ic_launcher"
         android:theme="@android:style/Theme.Material.NoActionBar"
         android:supportsRtl="true">
         <activity android:name=".MainActivity" android:exported="true">
