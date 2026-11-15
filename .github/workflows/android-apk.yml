@@ -1,9 +1,9 @@
-name: Build ORION Android APK
+name: Build 04 Android APK
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, "04-v1-foundation"]
     paths:
       - "android/**"
       - ".github/workflows/android-apk.yml"
@@ -33,7 +33,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: ORION-debug-apk
+          name: 04-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
