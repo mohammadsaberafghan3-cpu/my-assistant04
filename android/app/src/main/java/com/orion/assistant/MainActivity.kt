@@ -157,6 +157,16 @@ private fun OrionCommandCenter() {
         var target = normalized
         openWords.forEach { target = target.replace(it, "") }
         target = target.replace("برنامه", "").replace("اپلیکیشن", "").replace("اپ", "").trim()
+            .removeSuffix(" را").removeSuffix(" رو").trim()
+        val aliases = mapOf(
+            "واتساپ" to "whatsapp", "واتس اپ" to "whatsapp",
+            "اینستاگرام" to "instagram", "تلگرام" to "telegram",
+            "کروم" to "chrome", "گوگل کروم" to "chrome",
+            "یوتیوب" to "youtube", "فیس بوک" to "facebook",
+            "فیسبوک" to "facebook", "جیمیل" to "gmail",
+            "گالری" to "gallery", "فایل من" to "my files"
+        )
+        aliases.forEach { (fa, en) -> target = target.replace(fa, en) }
         when {
             normalized.contains("تنظیمات") -> {
                 runCatching { context.startActivity(Intent(android.provider.Settings.ACTION_SETTINGS)) }
