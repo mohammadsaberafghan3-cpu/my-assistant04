@@ -1,9 +1,9 @@
-# ORION — Persian personal assistant
+# 04 — Persian personal assistant
 
-ORION is an offline-first Persian personal assistant with a dedicated native Android app and a browser/PWA foundation.
+04 is an offline-first Persian personal assistant with a dedicated native Android app and a browser/PWA foundation.
 
 ## Current web foundation (v0.2)
-The root page is the new ORION workspace. It currently includes:
+The root page is the new 04 workspace. It currently includes:
 - Persian RTL responsive interface and navigation.
 - Local command-based chat (not a general-purpose LLM).
 - Conversation history persisted in this browser.
