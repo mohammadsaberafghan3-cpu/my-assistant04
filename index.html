@@ -8,15 +8,65 @@
 :root{color-scheme:dark;--bg:#080d19;--panel:#111a2c;--panel2:#17243b;--line:#283854;--txt:#edf3ff;--muted:#9cabc2;--blue:#8295ff;--mint:#48d9aa;--red:#ff7777}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#263965 0%,var(--bg) 58%);color:var(--txt);font:15px Tahoma,Arial,sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{max-width:1100px;margin:auto;padding:16px}.top{display:flex;align-items:center;gap:13px;padding:13px 4px 20px}.orb{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(140deg,#657aff,#38d4a5);font-size:26px;box-shadow:0 8px 30px #526fff44}.brand{flex:1}.brand h1{font-size:23px;letter-spacing:2px;margin:0 0 5px}.sub{font-size:11px;color:var(--muted)}.status{font-size:11px;color:var(--mint);border:1px solid #48d9aa55;border-radius:30px;padding:7px 10px}.layout{display:grid;grid-template-columns:205px 1fr;gap:15px}.side,.panel{background:#10192acc;border:1px solid var(--line);border-radius:18px}.side{padding:10px;height:max-content;position:sticky;top:10px}.nav{width:100%;border:0;background:transparent;color:var(--muted);text-align:right;padding:13px 12px;border-radius:11px;margin:2px 0}.nav.active,.nav:hover{background:#26375a;color:#fff}.main{min-width:0}.panel{padding:18px;min-height:560px}.view{display:none}.view.active{display:block}.heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}.heading h2{font-size:18px;margin:0}.muted{color:var(--muted);font-size:12px;line-height:1.9}.chat{height:390px;overflow:auto;display:flex;flex-direction:column;gap:11px;padding:5px 2px 14px}.msg{max-width:88%;padding:12px 14px;border-radius:15px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}.msg.user{align-self:flex-start;background:#293b63;border-bottom-left-radius:4px}.msg.bot{align-self:flex-end;background:#172c35;border:1px solid #31534e;border-bottom-right-radius:4px}.msg small{display:block;color:#9eafc7;font-size:10px;margin-top:5px}.compose{display:flex;gap:8px;align-items:flex-end}.field,textarea,input,select{width:100%;background:#0b1323;color:var(--txt);border:1px solid var(--line);border-radius:11px;padding:12px;outline:none}.field:focus,textarea:focus,input:focus{border-color:var(--blue)}textarea{resize:vertical;min-height:48px}.btn{border:1px solid var(--line);background:#1b2a47;color:var(--txt);border-radius:11px;padding:11px 14px}.btn.primary{background:linear-gradient(120deg,#596fe0,#337d88);border:0}.btn.danger{color:#ffaaaa}.btn:disabled{opacity:.45}.row{display:flex;gap:9px;align-items:center}.row>*{flex:1}.stack{display:grid;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{background:#121f35;border:1px solid var(--line);padding:13px;border-radius:13px;margin:8px 0}.item strong{display:block;margin-bottom:6px}.item p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8;margin:0;color:#c3cee2;font-size:13px}.item.done{opacity:.58}.item.done strong{text-decoration:line-through}.item-actions{display:flex;gap:7px;margin-top:10px}.item-actions button{padding:7px 10px;font-size:11px}.empty{text-align:center;color:var(--muted);padding:40px 10px}.notice{padding:12px;border-radius:12px;background:#302817;border:1px solid #68532b;color:#f5dba4;font-size:12px;line-height:1.9;margin:12px 0}.good{background:#102c28;border-color:#28584e;color:#a8f0d7}.toolgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.tool{background:#14223a;border:1px solid var(--line);border-radius:13px;padding:14px}.tool h3{font-size:14px;margin:0 0 10px}.result{font-size:13px;color:var(--mint);margin-top:9px;overflow-wrap:anywhere}.small{font-size:11px;color:var(--muted)}.footer{text-align:center;color:#71809b;font-size:10px;padding:18px}.hidden{display:none!important}
 @media(max-width:700px){.app{padding:10px}.layout{grid-template-columns:1fr}.side{position:static;display:flex;overflow:auto;gap:4px;padding:6px}.nav{white-space:nowrap;width:auto;flex:0 0 auto;padding:10px}.panel{padding:13px;min-height:520px}.chat{height:52vh}.grid2{grid-template-columns:1fr}.top{padding-bottom:12px}.status{font-size:10px}.msg{max-width:95%}}
+ 
+/* ORION reference-inspired command center */
+:root{color-scheme:dark;--bg:#030914;--panel:#071827;--panel2:#0a2236;--line:#16445b;--txt:#eafaff;--muted:#8caebe;--blue:#24b9f2;--mint:#36f0c0;--red:#ff7777}
+body{background:radial-gradient(ellipse at 50% 30%,#0b2940 0%,#061322 38%,#020711 78%);font-family:Tahoma,Arial,sans-serif}
+.app{max-width:760px;padding:12px 14px 28px}
+.top{padding:12px 2px 16px;gap:12px}
+.orb{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c9ffff,#24b9f2 34%,#092c52 70%);box-shadow:0 0 18px #20cfff99,0 0 45px #0b9bd455;color:#041323}
+.brand h1{font-size:25px;letter-spacing:5px;text-shadow:0 0 18px #1dbdff88}
+.sub{letter-spacing:1.6px;font-size:9px}
+.status{border-color:#2ceac477;color:#54f6d1;background:#062a2a88}
+.layout{display:block}
+.side{position:fixed;z-index:20;top:0;right:0;bottom:0;width:min(290px,84vw);height:100dvh;overflow:auto;border-radius:0 0 0 24px;padding:76px 14px 20px;background:rgba(3,14,27,.97);backdrop-filter:blur(22px);box-shadow:-15px 0 60px #0009;transform:translateX(110%);transition:transform .28s ease}
+.side.open{transform:translateX(0)}
+.nav{text-align:right;border:1px solid transparent;padding:14px 15px;font-size:14px}
+.nav.active,.nav:hover{background:linear-gradient(100deg,#0a3044,#0b243a);border-color:#1c7188;color:#e9ffff;box-shadow:inset -3px 0 #31e9d0}
+.panel{padding:14px 12px 18px;min-height:600px;background:linear-gradient(160deg,#071a2bdc,#040e1ddd);border:1px solid #16445b;border-radius:25px;box-shadow:0 20px 70px #0008,inset 0 1px #8deaff12}
+.view.active{display:block}
+.command-hero{position:relative;overflow:hidden;text-align:center;padding:8px 8px 18px;margin-bottom:14px;border-radius:22px;background:radial-gradient(ellipse at 50% 48%,#0c3550aa 0%,#061a2b66 48%,transparent 75%)}
+.command-hero:before,.command-hero:after{content:"";position:absolute;left:50%;top:47%;width:235px;height:235px;border:1px solid #28d7f333;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+.command-hero:after{width:190px;height:190px;border-color:#39f3cb33;animation:orbit 18s linear infinite}
+@keyframes orbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.hero-kicker{font-size:10px;letter-spacing:2px;color:#78b9d1}
+.hero-orb{position:relative;z-index:1;width:178px;height:178px;margin:16px auto 9px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 50%,#c5ffff 0 2%,#54e8f4 4%,#137eb1 15%,#082e53 43%,#041323 68%,transparent 70%);box-shadow:0 0 25px #18bdec88,0 0 75px #058bc955,inset 0 0 22px #6bffff66}
+.hero-orb:before,.hero-orb:after{content:"";position:absolute;inset:8px;border:1px solid #5beaff77;border-radius:50%;transform:rotateX(68deg) rotateZ(-18deg)}
+.hero-orb:after{inset:20px;border-color:#43f6ce66;transform:rotateX(70deg) rotateZ(38deg)}
+.hero-orb span{font-size:22px;letter-spacing:5px;color:#e7ffff;text-shadow:0 0 15px #3deaff;z-index:2}
+.hero-title{font-size:18px;letter-spacing:4px;margin:3px 0;color:#e9fcff}
+.hero-caption{font-size:11px;color:#8fb5c8}
+.hero-status{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 2px 13px}
+.hero-stat{padding:11px 10px;text-align:right;border:1px solid #1b566b;border-radius:14px;background:linear-gradient(130deg,#092338dd,#071523dd);box-shadow:inset 0 1px #c2f7ff0b}
+.hero-stat b{display:block;font-size:11px;color:#e0faff;margin-bottom:5px}
+.hero-stat span{font-size:10px;color:#62e8ce}
+.hero-actions{display:flex;justify-content:center;align-items:center;gap:10px}
+#voice{width:62px;height:62px;border-radius:50%;border:1px solid #6bf5ff;background:radial-gradient(circle at 35% 25%,#2dd9f3,#07517c 68%,#031b32);font-size:25px;box-shadow:0 0 22px #11bfe877}
+.heading{margin:8px 2px 13px}
+.heading h2{font-size:16px;color:#e6faff}
+.chat{height:245px;border:1px solid #133b50;border-radius:17px;padding:12px;background:#030d19aa}
+.msg.bot{background:#092b32;border-color:#1d615b}
+.msg.user{background:#102b4a;border:1px solid #1d4e72}
+.compose{gap:7px}
+.field,textarea,input,select{background:#041321;border-color:#17435a}
+.btn{background:#0b2940;border-color:#1c536a}
+.btn.primary{background:linear-gradient(110deg,#087cae,#087b70);color:white}
+.tool,.item{background:#081d30;border-color:#17445b}
+.footer{color:#53788c}
+.menu-toggle{width:42px;height:42px;border-radius:13px;border:1px solid #1a6074;background:#082338;color:#9ffaff;font-size:21px}
+.drawer-scrim{display:none;position:fixed;inset:0;background:#0009;z-index:19}
+.drawer-scrim.show{display:block}
+@media(min-width:701px){.app{max-width:760px}.side{top:12px;bottom:12px;height:auto;border-radius:20px}.panel{min-height:700px}.chat{height:270px}}
+@media(max-width:700px){.app{padding:9px}.panel{min-height:600px}.chat{height:235px}.grid2{grid-template-columns:1fr}.hero-orb{width:165px;height:165px}}
 </style></head>
 <body><div class="app">
-<header class="top"><div class="orb">✧</div><div class="brand"><h1>ORION</h1><div class="sub">PERSONAL INTELLIGENCE SYSTEM · نسخه بازطراحی‌شده</div></div><span class="status" id="net">● محلی</span></header>
+<header class="top"><button class="menu-toggle" id="menuToggle" aria-label="باز کردن منو">☰</button><div class="orb">✧</div><div class="brand"><h1>ORION</h1><div class="sub">AUTONOMOUS INTELLIGENCE · مرکز فرماندهی</div></div><span class="status" id="net">● محلی</span></header><div class="drawer-scrim" id="drawerScrim"></div>
 <div class="layout">
 <nav class="side">
 <button class="nav active" data-view="chat">◈ گفت‌وگو</button><button class="nav" data-view="memory">▤ حافظه</button><button class="nav" data-view="tasks">◷ وظایف</button><button class="nav" data-view="tools">⌘ ابزارها</button><button class="nav" data-view="settings">⚙ تنظیمات</button>
 </nav>
 <main class="main"><section class="panel">
-<section class="view active" id="view-chat"><div class="heading"><div><h2>اتاق فرمان ORION</h2><div class="muted">حالت محلی همیشه در دسترس است؛ اتصال مدل آنلاین اختیاری است.</div></div><button class="btn" id="clearChat">پاک‌سازی گفتگو</button></div><div class="chat" id="messages" aria-live="polite"></div><div class="compose"><textarea id="prompt" placeholder="فرمان یا پرسش خود را بنویس..." rows="2"></textarea><button class="btn" id="voice" title="ورودی صوتی">🎙</button><button class="btn primary" id="send">ارسال</button></div><div class="small" style="margin-top:8px">فرمان‌های محلی: «کمک»، «ساعت»، «تاریخ»، «یادداشت: متن»، «وظیفه: متن»، «جمع ۱۲ و ۸»</div></section>
+<section class="view active" id="view-chat"><div class="command-hero"><div class="hero-kicker">SYSTEM CORE · READY</div><div class="hero-orb"><span>ORION</span></div><div class="hero-title">مرکز فرماندهی</div><div class="hero-caption">دستیار هوشمند شخصی شما</div><div class="hero-status"><div class="hero-stat"><b>وضعیت هسته</b><span>● فعال در همین صفحه</span></div><div class="hero-stat"><b>اتصال شبکه</b><span id="heroNetwork">در حال بررسی</span></div></div><div class="hero-actions"><button class="btn" id="voice" title="ورودی صوتی">🎙</button></div><div class="small" style="margin-top:8px">برای فرمان صوتی لمس کنید</div></div><div class="heading"><div><h2>اتاق فرمان ORION</h2><div class="muted">حالت محلی همیشه در دسترس است؛ اتصال مدل آنلاین اختیاری است.</div></div><button class="btn" id="clearChat">پاک‌سازی گفتگو</button></div><div class="chat" id="messages" aria-live="polite"></div><div class="compose"><textarea id="prompt" placeholder="فرمان یا پرسش خود را بنویس..." rows="2"></textarea><button class="btn primary" id="send">ارسال</button></div><div class="small" style="margin-top:8px">فرمان‌های محلی: «کمک»، «ساعت»، «تاریخ»، «یادداشت: متن»، «وظیفه: متن»، «جمع ۱۲ و ۸»</div></section>
 <section class="view" id="view-memory"><div class="heading"><div><h2>حافظه محلی</h2><div class="muted">اطلاعات فقط روی همین مرورگر و دستگاه ذخیره می‌شود.</div></div></div><div class="row"><input id="memoryInput" placeholder="یک نکته برای یادآوری ORION..."><button class="btn primary" id="addMemory">ذخیره</button></div><div id="memoryList"></div></section>
 <section class="view" id="view-tasks"><div class="heading"><div><h2>مدیریت وظایف</h2><div class="muted">ثبت، تکمیل و حذف کارها به‌صورت محلی.</div></div></div><div class="row"><input id="taskInput" placeholder="وظیفه جدید..."><button class="btn primary" id="addTask">افزودن</button></div><div id="taskList"></div></section>
 <section class="view" id="view-tools"><div class="heading"><div><h2>ابزارهای عملیاتی</h2><div class="muted">ابزارهای ساده بدون نیاز به اینترنت.</div></div></div><div class="toolgrid">
@@ -36,7 +86,10 @@ function load(){try{return {...initial,...JSON.parse(localStorage.getItem(KEY)||
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert('فضای ذخیره‌سازی در دسترس نیست؛ از اطلاعات خروجی پشتیبان بگیر.')}} 
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function switchView(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.view===v))}
-document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>{switchView(b.dataset.view);closeDrawer()}));
+function closeDrawer(){$('side')?.classList.remove('open');$('drawerScrim')?.classList.remove('show')}
+$('menuToggle').addEventListener('click',()=>{$('side').classList.toggle('open');$('drawerScrim').classList.toggle('show')});
+$('drawerScrim').addEventListener('click',closeDrawer);
 function renderChat(){const box=$('messages');box.innerHTML=state.messages.map(m=>'<div class="msg '+(m.role==='user'?'user':'bot')+'">'+esc(m.text)+'<small>'+esc(m.time||'')+(m.source?' · '+esc(m.source):'')+'</small></div>').join('');box.scrollTop=box.scrollHeight}
 function addMessage(role,text,source){state.messages.push({role,text,source,time:new Date().toLocaleString('fa-IR')});if(state.messages.length>150)state.messages=state.messages.slice(-150);persist();renderChat()}
 function localAnswer(raw){const s=raw.trim(),n=s.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
@@ -71,7 +124,7 @@ $('testOnline').onclick=async()=>{const status=$('apiStatus');status.textContent
 $('apiBase').value=localStorage.getItem('orion-api-base')||'';$('modelName').value=localStorage.getItem('orion-model')||'';
 function renderAll(){renderChat();renderMemories();renderTasks();renderNotes()}renderAll();
 if('SpeechRecognition'in window||'webkitSpeechRecognition'in window){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='fa-IR';recognition.onresult=e=>$('prompt').value=e.results[0][0].transcript;recognition.onerror=()=>alert('تشخیص گفتار در این مرورگر در دسترس نیست.');$('voice').onclick=()=>recognition.start()}else $('voice').onclick=()=>alert('مرورگر فعلی از تشخیص گفتار پشتیبانی نمی‌کند.');
-function net(){ $('net').textContent=navigator.onLine?'● آنلاین':'● آفلاین';$('net').style.color=navigator.onLine?'var(--mint)':'#f5dba4'}window.addEventListener('online',net);window.addEventListener('offline',net);net();
+function net(){ $('net').textContent=navigator.onLine?'● آنلاین':'● آفلاین';$('net').style.color=navigator.onLine?'var(--mint)':'#f5dba4';const h=$('heroNetwork');if(h)h.textContent=navigator.onLine?'● متصل':'● آفلاین'}window.addEventListener('online',net);window.addEventListener('offline',net);net();
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 })();
 </script></body></html>
