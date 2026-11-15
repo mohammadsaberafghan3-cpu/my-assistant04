@@ -78,7 +78,7 @@ private val menuItems = listOf(
     "مخاطبین" to Icons.Default.People, "پیام‌ها" to Icons.Default.Chat,
     "وظایف" to Icons.Default.TaskAlt, "حافظه و یادگیری" to Icons.Default.Storage,
     "امنیت و مجوزها" to Icons.Default.Shield, "تنظیمات" to Icons.Default.Settings,
-    "پروفایل کاربر" to Icons.Default.AccountCircle, "درباره ORION" to Icons.Default.Info
+    "پروفایل کاربر" to Icons.Default.AccountCircle, "درباره 04" to Icons.Default.Info
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,7 +129,7 @@ private fun OrionCommandCenter() {
                 Column(Modifier.fillMaxWidth().background(Glow).padding(20.dp)) {
                     OrionMark(Modifier.size(76.dp))
                     Spacer(Modifier.height(8.dp))
-                    Text("ORION", color = Green, fontSize = 25.sp, fontWeight = FontWeight.Black, letterSpacing = 3.sp)
+                    Text("04", color = Green, fontSize = 25.sp, fontWeight = FontWeight.Black, letterSpacing = 3.sp)
                     Text("نسخه 0.3 • مرکز فرماندهی", color = Muted, fontSize = 11.sp)
                     Spacer(Modifier.height(10.dp))
                     Surface(color = Color(0xFF10372F), shape = CircleShape) { Text("●  آماده به کار", color = Green, fontSize = 11.sp, modifier = Modifier.padding(horizontal=12.dp, vertical=6.dp)) }
@@ -144,13 +144,13 @@ private fun OrionCommandCenter() {
                     )
                 }
                 Spacer(Modifier.weight(1f))
-                Text("ORION • Android Intelligent Agent", color=Muted, fontSize=10.sp, modifier=Modifier.padding(18.dp))
+                Text("04 • Android Intelligent Agent", color=Muted, fontSize=10.sp, modifier=Modifier.padding(18.dp))
             }
         }
     ) {
         Scaffold(containerColor = Bg, topBar = {
             TopAppBar(
-                title = { Column { Text("ORION", color=Green, fontWeight=FontWeight.Black, letterSpacing=2.sp); Text(page, color=Muted, fontSize=11.sp) } },
+                title = { Column { Text("04", color=Green, fontWeight=FontWeight.Black, letterSpacing=2.sp); Text(page, color=Muted, fontSize=11.sp) } },
                 navigationIcon = { IconButton(onClick={scope.launch { drawerState.open() }}) { Icon(Icons.Default.Menu, "منو", tint=MainText) } },
                 actions = { Surface(color=Color(0xFF10372F), shape=CircleShape, modifier=Modifier.padding(end=14.dp)) { Text("●", color=Green, modifier=Modifier.padding(9.dp)) } },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor=Bg)
@@ -169,7 +169,7 @@ private fun OrionCommandCenter() {
                     "خانه" -> {
                         Column(Modifier.fillMaxWidth().background(Glow, RoundedCornerShape(24.dp)).padding(18.dp), horizontalAlignment=Alignment.CenterHorizontally) {
                             OrionMark(Modifier.size(164.dp))
-                            Text("سلام، من ORION هستم", color=MainText, fontSize=19.sp, fontWeight=FontWeight.Bold)
+                            Text("سلام، من 04 هستم", color=MainText, fontSize=19.sp, fontWeight=FontWeight.Bold)
                             Text("مرکز هوشمند کنترل و اجرای وظایف گوشی", color=Muted, fontSize=12.sp)
                             Spacer(Modifier.height(14.dp))
                             Surface(color=Color(0xFF092D32), shape=CircleShape, modifier=Modifier.fillMaxWidth()) {
@@ -221,11 +221,11 @@ private fun OrionCommandCenter() {
                         OutlinedButton(onClick={if(phoneNumber.isNotBlank()) runCatching { context.startActivity(Intent(Intent.ACTION_DIAL,Uri.parse("tel:${Uri.encode(phoneNumber)}"))) }},enabled=phoneNumber.isNotBlank()) { Text("بازکردن شماره‌گیر") }
                     }
                     "وظایف" -> { PageTitle("وظایف و عملیات","مرکز پیگیری اجرای فرمان‌ها"); StatusTile("کنترل رابط برنامه‌ها","نیازمند پیاده‌سازی سرویس Accessibility",Cyan); StatusTile("برنامه‌ریز هوشمند","هنوز به موتور هوش مصنوعی متصل نشده است",Green); StatusTile("تأیید عملیات حساس","ارسال، حذف و پرداخت باید با اجازه شما باشد",Cyan) }
-                    "حافظه و یادگیری" -> { PageTitle("حافظه و یادگیری","مدیریت داده‌های محلی ORION"); StatusTile("حافظه محلی","ذخیره پایدار و مدیریت حافظه هنوز پیاده‌سازی نشده است",Cyan) }
+                    "حافظه و یادگیری" -> { PageTitle("حافظه و یادگیری","مدیریت داده‌های محلی 04"); StatusTile("حافظه محلی","ذخیره پایدار و مدیریت حافظه هنوز پیاده‌سازی نشده است",Cyan) }
                     "امنیت و مجوزها" -> { PageTitle("امنیت و مجوزها","مجوزها باید آگاهانه و توسط شما فعال شوند"); StatusTile("مخاطبین","مجوز فقط هنگام درخواست شما گرفته می‌شود",Green); StatusTile("دسترسی‌پذیری اندروید","سرویس کنترل صفحه هنوز اضافه نشده است",Cyan); StatusTile("توقف اضطراری","در نسخه عامل اجرایی اضافه خواهد شد",Green) }
-                    "تنظیمات" -> { PageTitle("تنظیمات ORION","تنظیمات ظاهری و رفتاری"); StatusTile("زبان","فارسی • رابط راست‌چین",Green); StatusTile("حالت عملکرد","هدف: آفلاین‌محور با امکانات آنلاین اختیاری",Cyan); StatusTile("سطح استقلال","سطح متعادل؛ تأیید عملیات حساس",Green) }
-                    "پروفایل کاربر" -> { PageTitle("پروفایل و مشخصات کاربر","اطلاعات نمایشی حساب محلی"); StatusTile("نام نمایشی","کاربر ORION",Cyan); StatusTile("سطح دسترسی","قابل تنظیم پس از تکمیل سامانه مجوزها",Green) }
-                    "درباره ORION" -> { PageTitle("درباره ORION","Android Intelligent Agent"); StatusTile("نسخه رابط","0.3.0 • بازطراحی رابط فرماندهی",Green); StatusTile("وضعیت توسعه","رابط کاربری بازطراحی شده؛ عامل اجرایی هنوز کامل نیست",Cyan) }
+                    "تنظیمات" -> { PageTitle("تنظیمات 04","تنظیمات ظاهری و رفتاری"); StatusTile("زبان","فارسی • رابط راست‌چین",Green); StatusTile("حالت عملکرد","هدف: آفلاین‌محور با امکانات آنلاین اختیاری",Cyan); StatusTile("سطح استقلال","سطح متعادل؛ تأیید عملیات حساس",Green) }
+                    "پروفایل کاربر" -> { PageTitle("پروفایل و مشخصات کاربر","اطلاعات نمایشی حساب محلی"); StatusTile("نام نمایشی","کاربر 04",Cyan); StatusTile("سطح دسترسی","قابل تنظیم پس از تکمیل سامانه مجوزها",Green) }
+                    "درباره 04" -> { PageTitle("درباره 04","Android Intelligent Agent"); StatusTile("نسخه رابط","0.3.0 • بازطراحی رابط فرماندهی",Green); StatusTile("وضعیت توسعه","رابط کاربری بازطراحی شده؛ عامل اجرایی هنوز کامل نیست",Cyan) }
                     else -> PageTitle(page,"این بخش در حال آماده‌سازی است")
                 }
             }
