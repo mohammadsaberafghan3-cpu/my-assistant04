@@ -2,6 +2,7 @@ package com.orion.assistant
 
 import android.Manifest
 import android.content.Intent
+import android.speech.RecognizerIntent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -122,6 +123,9 @@ private fun OrionCommandCenter() {
     var search by remember { mutableStateOf("") }
     val localTasks = remember { mutableStateListOf<LocalTask>().apply { addAll(load04Tasks(context)) } }
     var taskDraft by remember { mutableStateOf("") }
+    var commandText by remember { mutableStateOf("") }
+    var commandStatus by remember { mutableStateOf("فرمان خود را بنویسید یا با صدا بگویید.") }
+    var pendingVoiceCommand by remember { mutableStateOf("") }
 
     fun loadApps() {
         val intent = Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER)
@@ -144,8 +148,68 @@ private fun OrionCommandCenter() {
         contacts = result.distinctBy { it.name + it.phone }
         contactStatus = if (contacts.isEmpty()) "مخاطبی با شماره تلفن پیدا نشد." else "${contacts.size} شماره از دفترچه مخاطبین خوانده شد."
     }
-    val contactsPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) loadContacts() else contactStatus = "مجوز مخاطبین داده نشد."
+    fun execute04Command(raw: String) {
+        val normalized = raw.trim().lowercase()
+            .replace('ي', 'ی').replace('ك', 'ک')
+            .replace("لطفا", "").replace("لطفاً", "")
+        if (normalized.isBlank()) { commandStatus = "فرمان خالی است."; return }
+        val openWords = listOf("باز کن", "بازکن", "اجرا کن", "اجراکن", "برو به", "برو")
+        var target = normalized
+        openWords.forEach { target = target.replace(it, "") }
+        target = target.replace("برنامه", "").replace("اپلیکیشن", "").replace("اپ", "").trim()
+        when {
+            normalized.contains("تنظیمات") -> {
+                runCatching { context.startActivity(Intent(android.provider.Settings.ACTION_SETTINGS)) }
+                    .onSuccess { commandStatus = "در حال بازکردن تنظیمات گوشی." }
+                    .onFailure { commandStatus = "بازکردن تنظیمات انجام نشد." }
+                return
+            }
+            normalized.contains("دوربین") -> {
+                val intent = context.packageManager.getLaunchIntentForPackage("com.sec.android.app.camera")
+                    ?: Intent("android.media.action.IMAGE_CAPTURE")
+                runCatching { context.startActivity(intent) }
+                    .onSuccess { commandStatus = "درخواست بازکردن دوربین ارسال شد." }
+                    .onFailure { commandStatus = "دوربین در دسترس نیست یا اجازهٔ اجرا داده نشد." }
+                return
+            }
+            normalized.contains("شماره گیر") || normalized.contains("شماره‌گیر") -> {
+                runCatching { context.startActivity(Intent(Intent.ACTION_DIAL)) }
+                    .onSuccess { commandStatus = "شماره‌گیر باز شد." }
+                    .onFailure { commandStatus = "بازکردن شماره‌گیر ممکن نشد." }
+                return
+            }
+        }
+        val match = apps.firstOrNull { app ->
+            val label = app.label.lowercase().replace('ي', 'ی').replace('ك', 'ک')
+            target.isNotBlank() && (label == target || label.contains(target) || target.contains(label))
+        }
+        if (match == null) {
+            commandStatus = "برنامه‌ای با نام «" + target + "» پیدا نکردم. نام برنامه را دقیق‌تر بگویید."
+            return
+        }
+        val launch = context.packageManager.getLaunchIntentForPackage(match.packageName)
+        if (launch == null) {
+            commandStatus = "برای " + match.label + " مسیر اجرای مستقیم پیدا نشد."
+            return
+        }
+        runCatching { context.startActivity(launch) }
+            .onSuccess { commandStatus = "فرمان اجرا شد: " + match.label + " در حال بازشدن است." }
+            .onFailure { commandStatus = "بازکردن " + match.label + " ناموفق بود: " + (it.message ?: "خطای اندروید") }
+    }
+    val voiceCommandLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val spoken = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
+        if (!spoken.isNullOrBlank()) {
+            commandText = spoken
+            pendingVoiceCommand = spoken
+        } else {
+            commandStatus = "صدایی تشخیص داده نشد. دوباره تلاش کنید یا فرمان را تایپ کنید."
+        }
+    }
+    LaunchedEffect(pendingVoiceCommand) {
+        if (pendingVoiceCommand.isNotBlank()) {
+            execute04Command(pendingVoiceCommand)
+            pendingVoiceCommand = ""
+        }
     }
     LaunchedEffect(Unit) { loadApps() }
 
@@ -206,6 +270,43 @@ private fun OrionCommandCenter() {
                             }
                         }
                         Spacer(Modifier.height(14.dp))
+                        Surface(color=Panel, shape=RoundedCornerShape(18.dp), modifier=Modifier.fillMaxWidth()) {
+                            Column(Modifier.padding(14.dp)) {
+                                Text("فرمان به 04", color=Green, fontSize=16.sp, fontWeight=FontWeight.Bold)
+                                Spacer(Modifier.height(8.dp))
+                                OutlinedTextField(
+                                    value = commandText,
+                                    onValueChange = { commandText = it },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    singleLine = true,
+                                    label = { Text("مثلاً: واتساپ را باز کن") }
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Button(
+                                        onClick = { execute04Command(commandText) },
+                                        enabled = commandText.isNotBlank(),
+                                        modifier = Modifier.weight(1f),
+                                        colors = ButtonDefaults.buttonColors(containerColor = Green)
+                                    ) { Text("اجرای فرمان", color = Bg) }
+                                    OutlinedButton(
+                                        onClick = {
+                                            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                                                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                                                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa-IR")
+                                                putExtra(RecognizerIntent.EXTRA_PROMPT, "فرمان خود را بگویید")
+                                                putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
+                                            }
+                                            runCatching { voiceCommandLauncher.launch(intent) }
+                                                .onFailure { commandStatus = "تشخیص گفتار روی این گوشی در دسترس نیست؛ از ورودی نوشتاری استفاده کنید." }
+                                        },
+                                        modifier = Modifier.weight(1f)
+                                    ) { Icon(Icons.Default.Mic, null); Spacer(Modifier.width(5.dp)); Text("فرمان صوتی") }
+                                }
+                                Text(commandStatus, color=Muted, fontSize=12.sp)
+                                Text("فعلاً اجرای فرمان برای بازکردن برنامه‌ها و چند بخش سیستمی فعال است؛ کنترل داخل برنامه‌ها هنوز اضافه نشده.", color=Muted, fontSize=10.sp, lineHeight=15.sp)
+                            }
+                        }
                         Text("دسترسی سریع", color=MainText, fontWeight=FontWeight.Bold, fontSize=16.sp)
                         Spacer(Modifier.height(8.dp))
                         val shortcuts=listOf("برنامه‌ها" to Icons.Default.GridView,"مخاطبین" to Icons.Default.People,"پیام‌ها" to Icons.Default.Chat,"تنظیمات" to Icons.Default.Settings)
